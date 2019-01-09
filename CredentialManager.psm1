@@ -22,12 +22,8 @@ function New-VaultCredential {
     [cmdletbinding()]
     param(
         [Parameter(Mandatory = $true)][String]$Resource,
-        [PSCredential]$Credential
+        [Parameter(Mandatory = $true)][PSCredential]$Credential
     )
-
-    if (!(Get-Credential)) { #If no credential is provided, prompt.
-        $Credential = (Get-Credential)
-    }
 
     $ScriptBlock = {
         [cmdletbinding()]
