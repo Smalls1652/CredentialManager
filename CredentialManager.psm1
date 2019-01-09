@@ -243,7 +243,7 @@ function Get-VaultCredential {
 
     $NoReturn = $false
 
-    if ($return | Select-Object -ExpandProperty "Data" -ErrorAction SilentlyContinue) {
+    if (($return | Where-Object -Property "Data" -eq $false | Select-Object -ExpandProperty "Data" -ErrorAction SilentlyContinue) -eq $false) {
         Write-Verbose "Job returned a $false data. Setting `$noReturn to $false"
         $NoReturn = $true
     }
@@ -266,10 +266,10 @@ function Get-VaultCredential {
     elseif ($return -and $UserName -and ($returnCount -ne 0)) {
         return [System.Management.Automation.PSCredential]::new($return.UserName, $return.Password)
     }
-    elseif ($return -and $returnCount -eq 1) {
+    elseif ($return -and $returnCount -eq 1 -and !($NoReturn)) {
         return [System.Management.Automation.PSCredential]::new($return.UserName, $return.Password)
     }
-    else {
-        Write-Error "A username was provided, but nothing returned back."
+    elseif ($return -and !($UserName) -and ($returnCount -gt 1)) {
+        Write-Error "This resource contains more than one UserName, please specify one with the UserName parameter."
     }
 }
