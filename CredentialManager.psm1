@@ -203,14 +203,19 @@ function Get-VaultCredential {
         try {
             $ResourcesByItemName = $PasswordVault.FindAllByResource($Resource)
 
-            $returnData = @()
-            foreach ($r in $ResourcesByItemName) {
-                $r.RetrievePassword()
-                $UserName = $r.UserName
-                $returnData += [System.Management.Automation.PSCredential]::new($UserName, (ConvertTo-SecureString $r.Password -AsPlainText -Force))
-            }
+            if (($ResourcesByItemName | Measure-Object).Count -ge 1) {
+                $returnData = @()
+                foreach ($r in $ResourcesByItemName) {
+                    $r.RetrievePassword()
+                    $UserName = $r.UserName
+                    $returnData += [System.Management.Automation.PSCredential]::new($UserName, (ConvertTo-SecureString $r.Password -AsPlainText -Force))
+                }
 
-            return $returnData
+                return $returnData
+            }
+            else {
+                Write-Error "No data returned."
+            }
         }
         catch {
             return (New-Object -TypeName psobject -Property @{
