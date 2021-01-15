@@ -1,3 +1,10 @@
+# ⚠️ This project has been archived ⚠️
+
+If you want to use a much better and more secure way of storing secrets/credentials in PowerShell, then take a look at these official PowerShell modules:
+
+- [@PowerShell/SecretManagement](https://github.com/PowerShell/SecretManagement)
+- [@PowerShell/SecretStore](https://github.com/PowerShell/SecretStore)
+
 # Credential Manager for Windows' PasswordVault
 
 There are numerous ways to save credentials in PowerShell, but the only two that are considered remotely secure are:
